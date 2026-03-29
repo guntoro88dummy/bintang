@@ -4,9 +4,9 @@ const videos = document.getElementById("videos");
 const live = document.getElementById("live");
 const trending = document.getElementById("trending");
 
-// HERO
-const allVideos = [...DATA.videos, ...DATA.live];
-const random = allVideos[Math.floor(Math.random()*allVideos.length)];
+// HERO RANDOM
+const all = [...DATA.videos, ...DATA.live];
+const random = all[Math.floor(Math.random()*all.length)];
 
 hero.innerHTML = `<iframe src="https://www.youtube.com/embed/${random.id}" allowfullscreen></iframe>`;
 
@@ -17,15 +17,12 @@ return `${Math.floor(Math.random()*100)}K views • ${Math.floor(Math.random()*1
 
 // RENDER
 function render(list, container, isLive=false){
-container.innerHTML = "";
-
+container.innerHTML="";
 list.forEach(v=>{
-const thumb = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
-
-container.innerHTML += `
+container.innerHTML+=`
 <div class="card">
 <div class="thumb">
-<img src="${thumb}">
+<img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg">
 <div class="duration">12:34</div>
 ${isLive ? '<div class="live">LIVE</div>' : ''}
 </div>
@@ -38,14 +35,11 @@ ${isLive ? '<div class="live">LIVE</div>' : ''}
 
 // TRENDING 7
 function renderTrending(list){
-trending.innerHTML = "";
-
+trending.innerHTML="";
 list.slice(0,7).forEach(v=>{
-const thumb = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
-
-trending.innerHTML += `
+trending.innerHTML+=`
 <div class="trend-card">
-<img src="${thumb}">
+<img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg">
 <p>🔥 ${v.title}</p>
 </div>
 `;
@@ -54,21 +48,19 @@ trending.innerHTML += `
 
 // LOAD
 render(DATA.shorts, shorts);
-render(DATA.videos.slice(0,6), videos); // FIX 6 VIDEO
+render(DATA.videos.slice(0,6), videos);
 render(DATA.live, live, true);
 renderTrending(DATA.videos);
 
+// MODAL
 function openModal(){
-document.getElementById("modal").style.display = "flex";
+document.getElementById("modal").style.display="flex";
 }
 
 function closeModal(){
-document.getElementById("modal").style.display = "none";
+document.getElementById("modal").style.display="none";
 }
 
-// ESC CLOSE
-document.addEventListener("keydown", function(e){
-if(e.key === "Escape"){
-closeModal();
-}
+document.addEventListener("keydown", e=>{
+if(e.key==="Escape") closeModal();
 });
