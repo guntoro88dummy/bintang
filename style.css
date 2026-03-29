@@ -3,7 +3,6 @@ background:#0f0f0f;
 color:#fff;
 font-family:'Roboto', Arial, sans-serif;
 margin:0;
--webkit-font-smoothing:antialiased;
 }
 
 /* HEADER */
@@ -63,11 +62,6 @@ border-radius:50%;
 margin-top:3px;
 }
 
-.profile-info h3{
-margin:0;
-font-size:18px;
-}
-
 .top-row{
 display:flex;
 align-items:center;
@@ -84,10 +78,6 @@ font-weight:500;
 cursor:pointer;
 }
 
-.subscribe:hover{
-background:#cc0000;
-}
-
 .handle{
 font-size:13px;
 color:#aaa;
@@ -98,6 +88,31 @@ margin:2px 0;
 font-size:13px;
 color:#aaa;
 margin:2px 0 6px;
+}
+
+/* SOCIAL */
+.social-row{
+display:flex;
+align-items:center;
+gap:10px;
+margin:8px 0;
+}
+
+.social-row img{
+width:24px;
+cursor:pointer;
+}
+
+/* SAWER */
+.sawer{
+margin-left:auto;
+background:#ffd600;
+border:none;
+padding:8px 14px;
+border-radius:20px;
+font-weight:600;
+cursor:pointer;
+color:#000;
 }
 
 .desc{
@@ -120,7 +135,6 @@ grid-template-columns:repeat(3,1fr);
 gap:12px;
 }
 
-/* CARD */
 .card{
 font-size:13px;
 }
@@ -186,17 +200,17 @@ overflow-x:auto;
 min-width:160px;
 }
 
-/* SIDEBAR */
-.sidebar-right{
-display:flex;
-flex-direction:column;
-}
-
+/* SIDEBAR FIX */
 .sidebar-card{
 background:#181818;
 padding:12px;
 border-radius:12px;
-flex-grow:1;
+height:fit-content;
+}
+
+#trending{
+max-height:420px;
+overflow:hidden;
 }
 
 .sidebar-card h3{
