@@ -44,7 +44,7 @@ ${isLive ? '<div class="live">LIVE</div>' : ''}
 function renderTrending(list){
 trending.innerHTML = "";
 
-list.slice(0,5).forEach(v => {
+list.slice(0,7).forEach(v => {
 
 const thumb = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
 
