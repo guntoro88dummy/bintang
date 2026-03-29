@@ -4,7 +4,7 @@ const videos = document.getElementById("videos");
 const live = document.getElementById("live");
 const trending = document.getElementById("trending");
 
-// HERO
+// HERO RANDOM
 const allVideos = [...DATA.videos, ...DATA.live];
 const random = allVideos[Math.floor(Math.random()*allVideos.length)];
 
@@ -12,12 +12,12 @@ hero.innerHTML = `
 <iframe src="https://www.youtube.com/embed/${random.id}" allowfullscreen></iframe>
 `;
 
-// GENERATE DUMMY META
+// META DUMMY
 function meta(){
 return `${Math.floor(Math.random()*100)}K views • ${Math.floor(Math.random()*10)} days ago`;
 }
 
-// RENDER
+// RENDER GRID
 function render(list, container, isLive=false){
 container.innerHTML = "";
 
@@ -40,7 +40,7 @@ ${isLive ? '<div class="live">LIVE</div>' : ''}
 });
 }
 
-// TRENDING
+// TRENDING 7 VIDEO
 function renderTrending(list){
 trending.innerHTML = "";
 
@@ -51,7 +51,7 @@ const thumb = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
 trending.innerHTML += `
 <div class="trend-card">
 <img src="${thumb}">
-<p>${v.title}</p>
+<p>🔥 ${v.title}</p>
 </div>
 `;
 
