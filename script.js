@@ -5,15 +5,15 @@ const live = document.getElementById("live");
 const gridMain = document.getElementById("grid-main");
 const trending = document.getElementById("trending");
 
-// HERO RANDOM
+// HERO RANDOM (TETAP VIDEO)
 const allVideos = [...DATA.videos, ...DATA.live];
 const random = allVideos[Math.floor(Math.random()*allVideos.length)];
 
 hero.innerHTML = `
-<iframe src="https://www.youtube.com/embed/${random.id}?autoplay=1&mute=1"></iframe>
+<iframe src="https://www.youtube.com/embed/${random.id}" allowfullscreen></iframe>
 `;
 
-// RENDER NORMAL
+// RENDER TANPA AUTOPLAY
 function render(list, container){
 list.forEach(v => {
 
@@ -27,20 +27,12 @@ el.innerHTML = `
 <p>${v.title}</p>
 `;
 
-el.onmouseover = () => {
-el.innerHTML = `<iframe src="https://www.youtube.com/embed/${v.id}?autoplay=1&mute=1"></iframe>`;
-};
-
-el.onmouseout = () => {
-el.innerHTML = `<img src="${thumb}"><p>${v.title}</p>`;
-};
-
 container.appendChild(el);
 
 });
 }
 
-// TRENDING (VERTICAL 5)
+// TRENDING
 function renderTrending(list){
 list.slice(0,5).forEach(v => {
 
