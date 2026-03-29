@@ -1,66 +1,96 @@
-const hero = document.getElementById("hero-video");
-const shorts = document.getElementById("shorts");
-const videos = document.getElementById("videos");
-const live = document.getElementById("live");
-const trending = document.getElementById("trending");
+// =======================
+// UTIL
+// =======================
 
-// HERO RANDOM
-const all = [...DATA.videos, ...DATA.live];
-const random = all[Math.floor(Math.random()*all.length)];
-
-hero.innerHTML = `<iframe src="https://www.youtube.com/embed/${random.id}" allowfullscreen></iframe>`;
-
-// META
-function meta(){
-return `${Math.floor(Math.random()*100)}K views • ${Math.floor(Math.random()*10)} days ago`;
+function shuffle(arr) {
+  return arr.sort(() => 0.5 - Math.random());
 }
+
+function getRandom(arr, total) {
+  return shuffle([...arr]).slice(0, total);
+}
+
+function thumb(id) {
+  return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+}
+
+function url(id) {
+  return `https://www.youtube.com/watch?v=${id}`;
+}
+
+// =======================
+// HERO VIDEO
+// =======================
+
+function setHero(id) {
+  document.getElementById("heroFrame").src =
+    `https://www.youtube.com/embed/${id}`;
+}
+
+// =======================
+// RENDER GRID
+// =======================
+
+function renderGrid(list, containerId, isShort = false) {
+  const el = document.getElementById(containerId);
+
+  el.innerHTML = list.map(id => `
+    <a href="${url(id)}" target="_blank">
+      <img src="${thumb(id)}">
+    </a>
+  `).join("");
+}
+
+// =======================
+// TRENDING (SIDEBAR)
+// =======================
+
+function renderTrending(list) {
+  const el = document.getElementById("trending-list");
+
+  el.innerHTML = list.map(id => `
+    <a href="${url(id)}" target="_blank" style="display:flex; gap:10px;">
+      <img src="${thumb(id)}" style="width:120px; border-radius:8px;">
+    </a>
+  `).join("");
+}
+
+// =======================
+// POPUP
+// =======================
+
+const popup = document.getElementById("popup");
+const openBtn = document.getElementById("openPopup");
+const closeBtn = document.getElementById("closePopup");
+
+if(openBtn){
+  openBtn.onclick = () => popup.style.display = "block";
+}
+
+if(closeBtn){
+  closeBtn.onclick = () => popup.style.display = "none";
+}
+
+window.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape"){
+    popup.style.display = "none";
+  }
+});
+
+// =======================
+// INIT
+// =======================
+
+const videos = getRandom(DATA.videos, 6);
+const shorts = getRandom(DATA.shorts, 6);
+const live = getRandom(DATA.live, 6);
+const trending = getRandom(DATA.videos, 7);
+
+// HERO dari video pertama
+setHero(videos[0]);
 
 // RENDER
-function render(list, container, isLive=false){
-container.innerHTML="";
-list.forEach(v=>{
-container.innerHTML+=`
-<div class="card">
-<div class="thumb">
-<img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg">
-<div class="duration">12:34</div>
-${isLive ? '<div class="live">LIVE</div>' : ''}
-</div>
-<p>${v.title}</p>
-<span>${meta()}</span>
-</div>
-`;
-});
-}
-
-// TRENDING 7
-function renderTrending(list){
-trending.innerHTML="";
-list.slice(0,7).forEach(v=>{
-trending.innerHTML+=`
-<div class="trend-card">
-<img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg">
-<p>🔥 ${v.title}</p>
-</div>
-`;
-});
-}
-
-// LOAD
-render(DATA.shorts, shorts);
-render(DATA.videos.slice(0,6), videos);
-render(DATA.live, live, true);
-renderTrending(DATA.videos);
-
-// MODAL
-function openModal(){
-document.getElementById("modal").style.display="flex";
-}
-
-function closeModal(){
-document.getElementById("modal").style.display="none";
-}
-
-document.addEventListener("keydown", e=>{
-if(e.key==="Escape") closeModal();
-});
+renderGrid(shorts, "shorts", true);
+renderGrid(videos, "videos");
+renderGrid(live, "live");
+renderTrending(trending);
