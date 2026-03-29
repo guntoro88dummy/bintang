@@ -1,4 +1,4 @@
-const CHANNEL_ID = "UCSKrztE8VRnE3XxXG3ATduw"; // GANTI PUNYAMU
+const CHANNEL_ID = "UCSKrztE8VRnE3XxXG3ATduw";
 
 const hero = document.getElementById("hero-video");
 const trending = document.getElementById("trending");
@@ -11,7 +11,9 @@ const handle = document.getElementById("channel-handle");
 async function loadChannel(){
 
 const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-const url = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+const url = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
+
+try{
 
 const res = await fetch(url);
 const text = await res.text();
@@ -22,6 +24,10 @@ const xml = parser.parseFromString(text, "text/xml");
 
 const entries = xml.getElementsByTagName("entry");
 
+if(entries.length === 0){
+throw new Error("Video tidak ditemukan");
+}
+
 // CHANNEL INFO
 name.innerText = xml.getElementsByTagName("title")[0].textContent;
 handle.innerText = "YouTube Channel";
@@ -29,7 +35,7 @@ handle.innerText = "YouTube Channel";
 // LOGO fallback
 logo.src = "https://www.youtube.com/s/desktop/fe7c0c3d/img/favicon_144x144.png";
 
-// AMBIL VIDEO LIST
+// AMBIL VIDEO
 let videosData = [];
 
 for(let i=0; i<entries.length; i++){
@@ -86,6 +92,16 @@ trending.innerHTML += `
 }
 
 });
+
+}catch(err){
+
+console.error(err);
+
+hero.innerHTML = "<p>Gagal load video</p>";
+videos.innerHTML = "<p>Video tidak bisa dimuat</p>";
+trending.innerHTML = "";
+
+}
 
 }
 
