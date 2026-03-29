@@ -1,8 +1,9 @@
 body{
 background:#0f0f0f;
 color:#fff;
-font-family:Roboto;
+font-family:'Roboto', Arial, sans-serif;
 margin:0;
+-webkit-font-smoothing:antialiased;
 }
 
 /* HEADER */
@@ -17,9 +18,15 @@ padding:14px 20px;
 }
 
 .logo{
-font-size:20px;
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
 font-weight:700;
-margin-left:10px;
+}
+
+.logo img{
+width:28px;
 }
 
 /* LAYOUT */
@@ -47,7 +54,6 @@ background:#181818;
 padding:15px;
 border-radius:12px;
 margin:15px 0;
-align-items:flex-start;
 }
 
 .profile-img{
@@ -62,14 +68,12 @@ margin:0;
 font-size:18px;
 }
 
-/* TOP ROW */
 .top-row{
 display:flex;
 align-items:center;
 gap:12px;
 }
 
-/* SUBSCRIBE BUTTON */
 .subscribe{
 background:#ff0000;
 border:none;
@@ -84,26 +88,23 @@ cursor:pointer;
 background:#cc0000;
 }
 
-/* HANDLE */
 .handle{
 font-size:13px;
 color:#aaa;
 margin:2px 0;
 }
 
-/* META LINE (SEJAJAR) */
 .meta-line{
 font-size:13px;
 color:#aaa;
 margin:2px 0 6px;
 }
 
-/* DESC */
 .desc{
 font-size:13px;
 color:#ccc;
-line-height:1.4;
 margin:0;
+line-height:1.4;
 }
 
 /* SECTION */
@@ -134,7 +135,6 @@ aspect-ratio:16/9;
 border-radius:10px;
 }
 
-/* DURATION */
 .duration{
 position:absolute;
 bottom:6px;
@@ -145,7 +145,6 @@ font-size:11px;
 border-radius:4px;
 }
 
-/* LIVE */
 .live{
 position:absolute;
 top:6px;
@@ -156,7 +155,6 @@ font-size:11px;
 border-radius:4px;
 }
 
-/* HOVER */
 .thumb img:hover{
 transform:scale(1.05);
 transition:0.2s;
@@ -189,28 +187,41 @@ min-width:160px;
 }
 
 /* SIDEBAR */
+.sidebar-right{
+display:flex;
+flex-direction:column;
+}
+
 .sidebar-card{
 background:#181818;
 padding:12px;
 border-radius:12px;
+flex-grow:1;
 }
 
-/* TRENDING */
+.sidebar-card h3{
+text-align:center;
+font-size:17px;
+font-weight:700;
+margin-bottom:15px;
+}
+
+/* TREND */
 .trend-card{
 display:flex;
 gap:10px;
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
 .trend-card img{
-width:110px;
+width:120px;
 aspect-ratio:16/9;
 border-radius:8px;
 }
 
 /* ADS */
 .ads{
-height:160px;
+height:140px;
 background:#222;
 margin-top:15px;
 border-radius:12px;
