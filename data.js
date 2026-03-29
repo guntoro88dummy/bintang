@@ -10,21 +10,21 @@ shorts: [
 ],
 
 videos: [
-{ id: "kJQP7kiw5Fk", title: "Video Terbaru 1" },
-{ id: "9No-FiEInLA", title: "Video Terbaru 2" },
-{ id: "CevxZvSJLk8", title: "Video Terbaru 3" },
-{ id: "hTWKbfoikeg", title: "Video Terbaru 4" },
-{ id: "3AtDnEC4zak", title: "Video Terbaru 5" },
-{ id: "04854XqcfCY", title: "Video Terbaru 6" }
+{ id: "kJQP7kiw5Fk", title: "Video 1" },
+{ id: "9No-FiEInLA", title: "Video 2" },
+{ id: "CevxZvSJLk8", title: "Video 3" },
+{ id: "hTWKbfoikeg", title: "Video 4" },
+{ id: "3AtDnEC4zak", title: "Video 5" },
+{ id: "04854XqcfCY", title: "Video 6" }
 ],
 
 live: [
-{ id: "21X5lGlDOfg", title: "Live Stream 1" },
-{ id: "5qap5aO4i9A", title: "Live Stream 2" },
-{ id: "DWcJFNfaw9c", title: "Live Stream 3" },
-{ id: "e-ORhEE9VVg", title: "Live Stream 4" },
-{ id: "uelHwf8o7_U", title: "Live Stream 5" },
-{ id: "YqeW9_5kURI", title: "Live Stream 6" }
+{ id: "21X5lGlDOfg", title: "Live 1" },
+{ id: "5qap5aO4i9A", title: "Live 2" },
+{ id: "DWcJFNfaw9c", title: "Live 3" },
+{ id: "e-ORhEE9VVg", title: "Live 4" },
+{ id: "uelHwf8o7_U", title: "Live 5" },
+{ id: "YqeW9_5kURI", title: "Live 6" }
 ],
 
 grid: [
