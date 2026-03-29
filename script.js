@@ -57,18 +57,3 @@ render(DATA.shorts, shorts);
 render(DATA.videos.slice(0,6), videos); // FIX 6 VIDEO
 render(DATA.live, live, true);
 renderTrending(DATA.videos);
-
-function openModal(){
-document.getElementById("modal").style.display = "flex";
-}
-
-function closeModal(){
-document.getElementById("modal").style.display = "none";
-}
-
-// ESC CLOSE
-document.addEventListener("keydown", function(e){
-if(e.key === "Escape"){
-closeModal();
-}
-});
