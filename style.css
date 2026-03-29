@@ -1,54 +1,137 @@
-/* SIDEBAR FULL HEIGHT */
-.sidebar{
-display:flex;
-flex-direction:column;
-height:100%;
-}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aji Mangkara</title>
 
-/* TREND */
-.sidebar-card{
-background:#181818;
-padding:12px;
-border-radius:12px;
-height:360px;
-display:flex;
-flex-direction:column;
-overflow:hidden;
-margin-bottom:15px;
-}
+<link rel="stylesheet" href="style.css?v=1000">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+</head>
 
-#trending{overflow-y:auto;}
+<body>
 
-/* ADS CONTAINER */
-.ads-container{
-display:flex;
-flex-direction:column;
-flex:1;
-gap:10px;
-}
+<header class="header">
+<div class="header-inner">
+<h2 class="logo">
+<img src="https://em-content.zobj.net/content/2020/04/05/yt.png">
+Aji Mangkara
+</h2>
+</div>
+</header>
 
-/* ADS AUTO HEIGHT BAGI 6 */
-.ads{
-flex:1;
-background:#222;
-border-radius:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-font-size:14px;
-color:#fff;
-padding:10px;
-}
+<div class="layout">
 
-/* BLINK */
-.highlight{
-animation:blink 1.5s infinite;
-font-weight:600;
-}
+<main>
 
-@keyframes blink{
-0%{opacity:1;}
-50%{opacity:0.5;}
-100%{opacity:1;}
-}
+<div id="hero-video" class="hero"></div>
+
+<div class="profile-card">
+
+<img class="profile-img"
+src="https://yt3.googleusercontent.com/I0hZhWUt1nFTaHCpN_ZTko0C5yCDa_-ofvu78AK5mWNbgN9cuFKx9oNKRANomISQ34vraEXkIZQ=s160-c-k-c0x00ffffff-no-rj">
+
+<div class="profile-info">
+
+<div class="top-row">
+<h3>Aji Mangkara</h3>
+<button class="subscribe">Subscribe</button>
+</div>
+
+<p class="handle">@ajimangkara • 80K subscribers • 741 videos</p>
+
+<p class="meta-line">
+21,571,545 Views • Joined Jun 13, 2017 #ajimangkara #ajimangkarachannel #livewayangkulit
+</p>
+
+<div class="social-row">
+<div class="icon"><img src="https://cdn.simpleicons.org/youtube/ffffff"></div>
+<div class="icon"><img src="https://cdn.simpleicons.org/facebook/ffffff"></div>
+<div class="icon"><img src="https://cdn.simpleicons.org/instagram/ffffff"></div>
+<div class="icon"><img src="https://cdn.simpleicons.org/tiktok/ffffff"></div>
+
+<button class="sawer">SAWER ONLINE</button>
+</div>
+
+<p class="desc">
+Avlog Media kini berganti menjadi Aji Mangkara.
+Setelah 12 Tahun menggunakan nama Channel Avlog Media,
+Channel ini Kini berganti Nama dan logo 
+<span class="more" onclick="openModal()">More</span>
+</p>
+
+</div>
+</div>
+
+<h3 class="section-title">Shorts</h3>
+<div id="shorts" class="scroll-row shorts"></div>
+
+<h3 class="section-title">Videos</h3>
+<div id="videos" class="grid"></div>
+
+<h3 class="section-title">Past Live Streaming</h3>
+<div id="live" class="scroll-row"></div>
+
+</main>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+<div class="sidebar-card">
+<h3 class="trend-title">🔥 Sedang Populer</h3>
+<div id="trending"></div>
+</div>
+
+<div class="ads-container">
+
+<div class="ads highlight">Mau pasang iklan disini?<br>DM Admin</div>
+<div class="ads highlight">Mau pasang iklan disini?<br>DM Admin</div>
+<div class="ads highlight">Mau pasang iklan disini?<br>DM Admin</div>
+<div class="ads highlight">Mau pasang iklan disini?<br>DM Admin</div>
+<div class="ads highlight">Mau pasang iklan disini?<br>DM Admin</div>
+<div class="ads highlight">Mau pasang iklan disini?<br>DM Admin</div>
+
+</div>
+
+</aside>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+<div class="modal-content">
+
+<span class="close" onclick="closeModal()">✖</span>
+
+<h3>Description</h3>
+
+<p>
+Avlog Media kini berganti menjadi Aji Mangkara.
+===================================================================<br><br>
+
+Terima kasih sudah subscribe dan mendukung channel ini,<br>
+sawer online / donasi untuk perkembangan channel :<br>
+https://saweria.co/ajimangkara<br><br>
+
+Jangan Lupa Follow juga akun sosial media kami di:<br>
+Facebook : Anton Guntoro<br>
+Instagram : Anton Guntoro<br>
+Tiktok : Anton Guntoro<br><br>
+
+===================================================================<br><br>
+
+Setelah 12 Tahun menggunakan nama Channel Avlog Media,<br>
+Channel ini Kini berganti Nama dan logo menjadi Aji Mangkara.<br>
+Terima kasih saran dan kritiknya selama ini.<br><br>
+
+Rabu Pahing, 31 Desember 2025
+</p>
+
+</div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js?v=1000"></script>
+
+</body>
+</html>
