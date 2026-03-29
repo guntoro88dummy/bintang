@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YouTube Clone</title>
 
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
@@ -17,28 +17,31 @@
 
 <div class="layout">
 
-<!-- LEFT -->
-<aside class="sidebar-left">
-<img src="https://yt3.ggpht.com/ytc/AL5GRJX_dummy=s176" class="avatar">
-<h3>@ajimangkara</h3>
-<p>Content Creator</p>
-</aside>
-
 <!-- MAIN -->
 <main class="main">
 
+<!-- HERO -->
 <div id="hero-video" class="hero"></div>
 
-<h3>Highlight</h3>
-<div id="grid-main" class="scroll-row"></div>
+<!-- PROFILE (PINDAH KE SINI) -->
+<div class="profile">
+<img src="https://yt3.ggpht.com/ytc/AL5GRJX_dummy=s176">
+<div>
+<h3>@ajimangkara</h3>
+<p>Content Creator</p>
+</div>
+</div>
 
+<!-- SHORTS -->
 <h3>Shorts</h3>
-<div id="shorts" class="scroll-row"></div>
+<div id="shorts" class="scroll-row shorts"></div>
 
+<!-- VIDEOS -->
 <h3>Videos</h3>
 <div id="videos" class="grid"></div>
 
-<h3>Live Streaming</h3>
+<!-- LIVE -->
+<h3>Past Live Streaming</h3>
 <div id="live" class="scroll-row"></div>
 
 </main>
@@ -55,8 +58,8 @@
 
 </div>
 
-<script src="data.js?v=2"></script>
-<script src="script.js?v=2"></script>
+<script src="data.js?v=3"></script>
+<script src="script.js?v=3"></script>
 
 </body>
 </html>
