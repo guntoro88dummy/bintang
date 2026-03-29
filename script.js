@@ -1,69 +1,45 @@
-const CHANNEL_ID = "UCSKrztE8VRnE3XxXG3ATduw";
+const CHANNEL_USERNAME = "ajiMangkara"; // GANTI USERNAME CHANNEL (BUKAN ID)
 
 const hero = document.getElementById("hero-video");
 const trending = document.getElementById("trending");
 const videos = document.getElementById("videos");
 
-const logo = document.getElementById("channel-logo");
-const name = document.getElementById("channel-name");
-const handle = document.getElementById("channel-handle");
-
 async function loadChannel(){
-
-const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-const url = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
 
 try{
 
-const res = await fetch(url);
+const res = await fetch(`https://www.youtube.com/@${CHANNEL_USERNAME}/videos`);
 const text = await res.text();
 
-// PARSE XML
-const parser = new DOMParser();
-const xml = parser.parseFromString(text, "text/xml");
+// AMBIL JSON DARI PAGE
+const jsonText = text.split("var ytInitialData = ")[1].split(";</script>")[0];
+const data = JSON.parse(jsonText);
 
-const entries = xml.getElementsByTagName("entry");
+// AMBIL VIDEO LIST
+const contents = data.contents.twoColumnBrowseResultsRenderer.tabs[1]
+.tabRenderer.content.richGridRenderer.contents;
 
-if(entries.length === 0){
-throw new Error("Video tidak ditemukan");
+let vids = [];
+
+contents.forEach(c => {
+if(c.richItemRenderer){
+const v = c.richItemRenderer.content.videoRenderer;
+
+if(v){
+vids.push({
+id: v.videoId,
+title: v.title.runs[0].text,
+thumb: v.thumbnail.thumbnails[0].url
+});
 }
-
-// CHANNEL INFO
-name.innerText = xml.getElementsByTagName("title")[0].textContent;
-handle.innerText = "YouTube Channel";
-
-// LOGO fallback
-logo.src = "https://www.youtube.com/s/desktop/fe7c0c3d/img/favicon_144x144.png";
-
-// AMBIL VIDEO
-let videosData = [];
-
-for(let i=0; i<entries.length; i++){
-
-const entry = entries[i];
-
-const id = entry.getElementsByTagName("yt:videoId")[0].textContent;
-const title = entry.getElementsByTagName("title")[0].textContent;
-
-videosData.push({
-id,
-title,
-thumb: `https://img.youtube.com/vi/${id}/mqdefault.jpg`,
-link: `https://www.youtube.com/watch?v=${id}`
+}
 });
 
-}
-
 // RANDOM HERO
-const randomIndex = Math.floor(Math.random() * videosData.length);
-const heroVideo = videosData[randomIndex];
+const random = vids[Math.floor(Math.random()*vids.length)];
 
 hero.innerHTML = `
-<iframe
-src="https://www.youtube.com/embed/${heroVideo.id}"
-frameborder="0"
-allowfullscreen>
-</iframe>
+<iframe src="https://www.youtube.com/embed/${random.id}" allowfullscreen></iframe>
 `;
 
 // CLEAR
@@ -71,20 +47,18 @@ videos.innerHTML = "";
 trending.innerHTML = "";
 
 // LOOP
-videosData.forEach((v,i)=>{
+vids.forEach((v,i)=>{
 
-// GRID
 videos.innerHTML += `
-<a href="${v.link}" target="_blank" class="video-card">
+<a href="https://youtube.com/watch?v=${v.id}" target="_blank" class="video-card">
 <img src="${v.thumb}">
 <p class="video-title">${v.title}</p>
 </a>
 `;
 
-// TRENDING MAX 5
 if(i < 5){
 trending.innerHTML += `
-<a href="${v.link}" target="_blank" class="trend-card">
+<a href="https://youtube.com/watch?v=${v.id}" target="_blank" class="trend-card">
 <img src="${v.thumb}">
 <p class="video-title">${v.title}</p>
 </a>
@@ -93,14 +67,9 @@ trending.innerHTML += `
 
 });
 
-}catch(err){
-
-console.error(err);
-
-hero.innerHTML = "<p>Gagal load video</p>";
-videos.innerHTML = "<p>Video tidak bisa dimuat</p>";
-trending.innerHTML = "";
-
+}catch(e){
+console.error(e);
+hero.innerHTML = "<p>Gagal load</p>";
 }
 
 }
