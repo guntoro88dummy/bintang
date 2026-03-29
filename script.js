@@ -4,7 +4,7 @@ const videos = document.getElementById("videos");
 const live = document.getElementById("live");
 const trending = document.getElementById("trending");
 
-// HERO RANDOM
+// HERO
 const allVideos = [...DATA.videos, ...DATA.live];
 const random = allVideos[Math.floor(Math.random()*allVideos.length)];
 
@@ -12,8 +12,13 @@ hero.innerHTML = `
 <iframe src="https://www.youtube.com/embed/${random.id}" allowfullscreen></iframe>
 `;
 
+// GENERATE DUMMY META
+function meta(){
+return `${Math.floor(Math.random()*100)}K views • ${Math.floor(Math.random()*10)} days ago`;
+}
+
 // RENDER
-function render(list, container){
+function render(list, container, isLive=false){
 container.innerHTML = "";
 
 list.forEach(v => {
@@ -22,8 +27,13 @@ const thumb = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
 
 container.innerHTML += `
 <div class="card">
+<div class="thumb">
 <img src="${thumb}">
+<div class="duration">12:34</div>
+${isLive ? '<div class="live">LIVE</div>' : ''}
+</div>
 <p>${v.title}</p>
+<span>${meta()}</span>
 </div>
 `;
 
@@ -51,5 +61,5 @@ trending.innerHTML += `
 // LOAD
 render(DATA.shorts, shorts);
 render(DATA.videos, videos);
-render(DATA.live, live);
+render(DATA.live, live, true);
 renderTrending(DATA.videos);
