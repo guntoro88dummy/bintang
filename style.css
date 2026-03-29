@@ -1,19 +1,25 @@
 body{
 background:#0f0f0f;
 color:#fff;
-font-family:Roboto, Arial;
+font-family:Roboto;
 margin:0;
 }
 
 /* HEADER */
 .header{
-padding:14px 20px;
 border-bottom:1px solid #222;
 }
 
+.header-inner{
+max-width:1400px;
+margin:auto;
+padding:14px 20px;
+}
+
 .logo{
-font-size:18px;
+font-size:20px;
 font-weight:700;
+margin-left:10px;
 }
 
 /* LAYOUT */
@@ -41,25 +47,63 @@ background:#181818;
 padding:15px;
 border-radius:12px;
 margin:15px 0;
+align-items:flex-start;
 }
 
-.profile-card img{
+.profile-img{
 width:70px;
 height:70px;
 border-radius:50%;
+margin-top:3px;
 }
 
-.meta{
+.profile-info h3{
+margin:0;
+font-size:18px;
+}
+
+/* TOP ROW */
+.top-row{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/* SUBSCRIBE BUTTON */
+.subscribe{
+background:#ff0000;
+border:none;
+padding:8px 16px;
+border-radius:20px;
+color:#fff;
+font-weight:500;
+cursor:pointer;
+}
+
+.subscribe:hover{
+background:#cc0000;
+}
+
+/* HANDLE */
+.handle{
 font-size:13px;
 color:#aaa;
-margin:3px 0;
+margin:2px 0;
 }
 
+/* META LINE (SEJAJAR) */
+.meta-line{
+font-size:13px;
+color:#aaa;
+margin:2px 0 6px;
+}
+
+/* DESC */
 .desc{
 font-size:13px;
 color:#ccc;
-margin-top:5px;
 line-height:1.4;
+margin:0;
 }
 
 /* SECTION */
@@ -101,7 +145,7 @@ font-size:11px;
 border-radius:4px;
 }
 
-/* LIVE BADGE */
+/* LIVE */
 .live{
 position:absolute;
 top:6px;
@@ -166,7 +210,7 @@ border-radius:8px;
 
 /* ADS */
 .ads{
-height:180px;
+height:160px;
 background:#222;
 margin-top:15px;
 border-radius:12px;
@@ -174,5 +218,4 @@ display:flex;
 align-items:center;
 justify-content:center;
 color:#aaa;
-font-size:14px;
 }
