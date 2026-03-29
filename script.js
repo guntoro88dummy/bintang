@@ -1,77 +1,53 @@
-const CHANNEL_USERNAME = "ajiMangkara"; // GANTI USERNAME CHANNEL (BUKAN ID)
-
 const hero = document.getElementById("hero-video");
-const trending = document.getElementById("trending");
+const shorts = document.getElementById("shorts");
 const videos = document.getElementById("videos");
+const live = document.getElementById("live");
 
-async function loadChannel(){
-
-try{
-
-const res = await fetch(`https://www.youtube.com/@${CHANNEL_USERNAME}/videos`);
-const text = await res.text();
-
-// AMBIL JSON DARI PAGE
-const jsonText = text.split("var ytInitialData = ")[1].split(";</script>")[0];
-const data = JSON.parse(jsonText);
-
-// AMBIL VIDEO LIST
-const contents = data.contents.twoColumnBrowseResultsRenderer.tabs[1]
-.tabRenderer.content.richGridRenderer.contents;
-
-let vids = [];
-
-contents.forEach(c => {
-if(c.richItemRenderer){
-const v = c.richItemRenderer.content.videoRenderer;
-
-if(v){
-vids.push({
-id: v.videoId,
-title: v.title.runs[0].text,
-thumb: v.thumbnail.thumbnails[0].url
-});
-}
-}
-});
-
-// RANDOM HERO
-const random = vids[Math.floor(Math.random()*vids.length)];
+// HERO RANDOM
+const allVideos = [...DATA.videos, ...DATA.live];
+const random = allVideos[Math.floor(Math.random()*allVideos.length)];
 
 hero.innerHTML = `
 <iframe src="https://www.youtube.com/embed/${random.id}" allowfullscreen></iframe>
 `;
 
-// CLEAR
-videos.innerHTML = "";
-trending.innerHTML = "";
+// RENDER FUNCTION
+function render(list, container, isScroll=false){
 
-// LOOP
-vids.forEach((v,i)=>{
+list.forEach(v => {
 
-videos.innerHTML += `
-<a href="https://youtube.com/watch?v=${v.id}" target="_blank" class="video-card">
-<img src="${v.thumb}">
-<p class="video-title">${v.title}</p>
-</a>
+const thumb = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
+
+container.innerHTML += `
+<div class="card"
+onmouseover="playPreview(this,'${v.id}')"
+onmouseout="stopPreview(this,'${thumb}')">
+
+<img src="${thumb}">
+<p>${v.title}</p>
+
+</div>
 `;
-
-if(i < 5){
-trending.innerHTML += `
-<a href="https://youtube.com/watch?v=${v.id}" target="_blank" class="trend-card">
-<img src="${v.thumb}">
-<p class="video-title">${v.title}</p>
-</a>
-`;
-}
 
 });
 
-}catch(e){
-console.error(e);
-hero.innerHTML = "<p>Gagal load</p>";
 }
 
+// PREVIEW HOVER (PLAY VIDEO)
+function playPreview(el, id){
+el.innerHTML = `
+<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1"
+allowfullscreen></iframe>
+`;
 }
 
-loadChannel();
+function stopPreview(el, thumb){
+el.innerHTML = `
+<img src="${thumb}">
+`;
+}
+
+// LOAD
+render(DATA.shorts, shorts, true);
+render(DATA.videos, videos);
+render(DATA.live, live);
