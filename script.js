@@ -157,3 +157,15 @@ console.log("DATA error aman", e);
 loadJadwalWayang();
 
 });
+
+// =======================
+// FORCE LOAD JADWAL
+// =======================
+
+setTimeout(function(){
+  if(typeof loadJadwalWayang === "function"){
+    loadJadwalWayang();
+  }
+},1000);
+
+
