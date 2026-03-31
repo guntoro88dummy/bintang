@@ -1,3 +1,4 @@
+```javascript
 // =======================
 // UTIL
 // =======================
@@ -60,12 +61,14 @@ function renderTrending(list) {
 
 
 // =======================
-// JADWAL WAYANG
+// JADWAL WAYANG KULIT HARI INI
 // =======================
+
+function loadJadwalWayang(){
 
 const today = new Date();
 
-const tanggal = today.toLocaleDateString('id-ID',{
+const tanggalFull = today.toLocaleDateString('id-ID',{
 day:'numeric',
 month:'long',
 year:'numeric'
@@ -76,81 +79,43 @@ day:'numeric',
 month:'long'
 });
 
-document.getElementById("tanggalHariIni").innerHTML =
-"[ "+tanggal+" ]";
-
-
-fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.kluban.net/feeds/posts/default")
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let itemHariIni = data.items.find(item =>
-item.title.includes(tanggalSimple)
-);
-
-if(!itemHariIni){
-document.getElementById("jadwalWayang").innerHTML =
-"Belum ada jadwal hari ini";
-return;
+// tampilkan tanggal
+const tanggalEl = document.getElementById("tanggalHariIni");
+if(tanggalEl){
+tanggalEl.innerHTML = "[ " + tanggalFull + " ]";
 }
 
-// Ambil isi artikel
-fetch("https://api.allorigins.win/raw?url="+itemHariIni.link)
 
-.then(res=>res.text())
+// ambil rss kluban
+fetch("https://api.allorigins.win/raw?url=" + 
+encodeURIComponent("https://www.kluban.net/feeds/posts/default"))
 
-.then(html=>{
+.then(response => response.text())
 
-let parser = new DOMParser();
-let doc = parser.parseFromString(html,"text/html");
+.then(str => {
 
-let teks = doc.body.innerText;
+const parser = new DOMParser();
+const xml = parser.parseFromString(str, "text/xml");
 
-let potong = teks.split("JADWAL SEWAKTU")[0];
+const items = xml.querySelectorAll("entry");
 
-let hasil = potong.replace(itemHariIni.title,"");
+let html = "";
+let found = false;
 
-document.getElementById("jadwalWayang").innerHTML =
-"<div class='jadwal-item'>"+hasil.replace(/\n/g,"<br>")+"</div>";
+items.forEach(item => {
 
-});
+const title = item.querySelector("title").textContent;
 
-});
+if(
+title.includes(tanggalSimple) &&
+title.toLowerCase().includes("wayang")
+){
 
+found = true;
 
-
-// =======================
-// JADWAL WAYANG
-// =======================
-
-const today = new Date();
-
-const tanggal = today.toLocaleDateString('id-ID',{
-day:'numeric',
-month:'long',
-year:'numeric'
-});
-
-document.getElementById("tanggalHariIni").innerHTML =
-"[ "+tanggal+" ]";
-
-fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.kluban.net/feeds/posts/default")
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let html="";
-
-data.items.slice(0,2).forEach(item=>{
-
-if(item.title.toLowerCase().includes("wayang")){
-
-html+=`
+html += `
 <div class="jadwal-item">
-${item.title}
+🎭 ${title}
 </div>
 `;
 
@@ -158,14 +123,27 @@ ${item.title}
 
 });
 
+if(!found){
+html = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
+}
+
 document.getElementById("jadwalWayang").innerHTML = html;
 
+})
+
+.catch(()=>{
+document.getElementById("jadwalWayang").innerHTML =
+"<div class='jadwal-item'>Gagal memuat jadwal</div>";
 });
+
+}
 
 
 // =======================
 // INIT
 // =======================
+
+document.addEventListener("DOMContentLoaded", function(){
 
 const videos = getRandom(DATA.videos, 6);
 const shorts = getRandom(DATA.shorts, 6);
@@ -178,3 +156,9 @@ renderGrid(shorts,"shorts");
 renderGrid(videos,"videos");
 renderGrid(live,"live");
 renderTrending(trending);
+
+// load jadwal
+loadJadwalWayang();
+
+});
+```
