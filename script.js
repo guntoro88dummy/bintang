@@ -120,6 +120,49 @@ document.getElementById("jadwalWayang").innerHTML =
 });
 
 
+
+// =======================
+// JADWAL WAYANG
+// =======================
+
+const today = new Date();
+
+const tanggal = today.toLocaleDateString('id-ID',{
+day:'numeric',
+month:'long',
+year:'numeric'
+});
+
+document.getElementById("tanggalHariIni").innerHTML =
+"[ "+tanggal+" ]";
+
+fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.kluban.net/feeds/posts/default")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+let html="";
+
+data.items.slice(0,2).forEach(item=>{
+
+if(item.title.toLowerCase().includes("wayang")){
+
+html+=`
+<div class="jadwal-item">
+${item.title}
+</div>
+`;
+
+}
+
+});
+
+document.getElementById("jadwalWayang").innerHTML = html;
+
+});
+
+
 // =======================
 // INIT
 // =======================
