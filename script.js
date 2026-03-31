@@ -67,63 +67,52 @@ function renderTrending(list) {
 
 }
 
-
-
 // =======================
 // JADWAL WAYANG
 // =======================
 
 function loadJadwalWayang(){
 
-const tanggalEl = document.getElementById("tanggalHariIni");
 const jadwalEl = document.getElementById("jadwalWayang");
+const tanggalEl = document.getElementById("tanggalHariIni");
 
 if(!jadwalEl) return;
 
 const today = new Date();
 
-const tanggalFull = today.toLocaleDateString('id-ID',{
-day:'numeric',
-month:'long',
-year:'numeric'
+const tanggal = today.toLocaleDateString("id-ID",{
+day:"numeric",
+month:"long",
+year:"numeric"
 });
 
-tanggalEl.innerHTML = "[ " + tanggalFull + " ]";
+tanggalEl.innerHTML = "[ " + tanggal + " ]";
 
-// langsung parsing HTML kluban
-fetch("https://api.allorigins.win/raw?url=" + 
+jadwalEl.innerHTML = "Memuat jadwal...";
+
+fetch("https://api.allorigins.win/get?url=" + 
 encodeURIComponent("https://www.kluban.net"))
 
-.then(res=>res.text())
+.then(res=>res.json())
 
-.then(html=>{
+.then(data=>{
 
-let parser = new DOMParser();
-let doc = parser.parseFromString(html,"text/html");
+const html = data.contents;
 
-let links = doc.querySelectorAll("h3 a");
+if(html.includes("Wayang")){
 
-let hasil = "";
+jadwalEl.innerHTML =
+"<div class='jadwal-item'>🎭 Jadwal Wayang ditemukan — sedang diproses...</div>";
 
-links.forEach(link=>{
+}else{
 
-if(link.textContent.toLowerCase().includes("wayang")){
-hasil += `
-<div class="jadwal-item">
-🎭 ${link.textContent}
-</div>
-`;
+jadwalEl.innerHTML =
+"<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
+
 }
-
-});
-
-if(!hasil){
-hasil = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
-}
-
-jadwalEl.innerHTML = hasil;
 
 })
+
 .catch(()=>{
 
 jadwalEl.innerHTML =
@@ -132,6 +121,7 @@ jadwalEl.innerHTML =
 });
 
 }
+
 
 
 
