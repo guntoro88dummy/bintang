@@ -71,8 +71,14 @@ month:'long',
 year:'numeric'
 });
 
+const tanggalSimple = today.toLocaleDateString('id-ID',{
+day:'numeric',
+month:'long'
+});
+
 document.getElementById("tanggalHariIni").innerHTML =
 "[ "+tanggal+" ]";
+
 
 fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.kluban.net/feeds/posts/default")
 
@@ -80,25 +86,39 @@ fetch("https://api.rss2json.com/v1/api.json?rss_url=https://www.kluban.net/feeds
 
 .then(data=>{
 
-let html="";
+let itemHariIni = data.items.find(item =>
+item.title.includes(tanggalSimple)
+);
 
-data.items.slice(0,2).forEach(item=>{
-
-if(item.title.toLowerCase().includes("wayang")){
-
-html+=`
-<div class="jadwal-item">
-${item.title}
-</div>
-`;
-
+if(!itemHariIni){
+document.getElementById("jadwalWayang").innerHTML =
+"Belum ada jadwal hari ini";
+return;
 }
 
+// Ambil isi artikel
+fetch("https://api.allorigins.win/raw?url="+itemHariIni.link)
+
+.then(res=>res.text())
+
+.then(html=>{
+
+let parser = new DOMParser();
+let doc = parser.parseFromString(html,"text/html");
+
+let teks = doc.body.innerText;
+
+let potong = teks.split("JADWAL SEWAKTU")[0];
+
+let hasil = potong.replace(itemHariIni.title,"");
+
+document.getElementById("jadwalWayang").innerHTML =
+"<div class='jadwal-item'>"+hasil.replace(/\n/g,"<br>")+"</div>";
+
 });
 
-document.getElementById("jadwalWayang").innerHTML = html;
-
 });
+
 
 // =======================
 // INIT
