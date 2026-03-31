@@ -67,43 +67,73 @@ function renderTrending(list) {
 
 }
 
+// =======================
+// JADWAL WAYANG AUTO JSON
+// =======================
+
 function loadJadwalWayang(){
 
 const jadwalEl = document.getElementById("jadwalWayang");
 const tanggalEl = document.getElementById("tanggalHariIni");
 
+if(!jadwalEl) return;
+
+const today = new Date();
+
+const tanggal = today.toLocaleDateString("id-ID",{
+day:"numeric",
+month:"long",
+year:"numeric"
+});
+
+const tanggalCari = today.toLocaleDateString("id-ID",{
+day:"numeric",
+month:"long"
+});
+
+tanggalEl.innerHTML = "[ " + tanggal + " ]";
+
+jadwalEl.innerHTML = "Memuat jadwal...";
+
 fetch("jadwal.json")
-
 .then(res=>res.json())
-
 .then(data=>{
 
-tanggalEl.innerHTML = "[ " + data.tanggal + " ]";
+let hasil = "";
 
-let html = "";
+data.feed.entry.forEach(item=>{
 
-data.jadwal.forEach(item=>{
+const title = item.title.$t;
 
-html += `
+if(title.includes(tanggalCari)){
+
+hasil += `
 <div class="jadwal-item">
-🎭 ${item}
+🎭 ${title}
 </div>
 `;
 
+}
+
 });
 
-jadwalEl.innerHTML = html;
+if(hasil===""){
+hasil = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
+}
+
+jadwalEl.innerHTML = hasil;
 
 })
-
 .catch(()=>{
 
 jadwalEl.innerHTML =
-"<div class='jadwal-item'>Belum ada jadwal</div>";
+"<div class='jadwal-item'>Gagal memuat jadwal</div>";
 
 });
 
 }
+
+
 
 // =======================
 // INIT
