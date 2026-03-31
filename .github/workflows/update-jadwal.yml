@@ -1,0 +1,28 @@
+name: Update Jadwal Wayang
+
+on:
+schedule:
+- cron: "0 */6 * * *"
+workflow_dispatch:
+
+jobs:
+update:
+runs-on: ubuntu-latest
+
+```
+steps:
+  - name: Checkout
+    uses: actions/checkout@v3
+
+  - name: Fetch Jadwal
+    run: |
+      curl https://www.kluban.net/feeds/posts/default?alt=json > jadwal.json
+
+  - name: Commit
+    run: |
+      git config --global user.name "github-actions"
+      git config --global user.email "actions@github.com"
+      git add jadwal.json
+      git commit -m "Auto update jadwal" || echo "No changes"
+      git push
+```
