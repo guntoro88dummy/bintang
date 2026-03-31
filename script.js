@@ -67,88 +67,43 @@ function renderTrending(list) {
 
 }
 
-
-
-// =======================
-// JADWAL WAYANG
-// =======================
-
 function loadJadwalWayang(){
 
 const jadwalEl = document.getElementById("jadwalWayang");
 const tanggalEl = document.getElementById("tanggalHariIni");
 
-if(!jadwalEl) return;
+fetch("jadwal.json")
 
-const today = new Date();
+.then(res=>res.json())
 
-const tanggal = today.toLocaleDateString("id-ID",{
-day:"numeric",
-month:"long",
-year:"numeric"
-});
+.then(data=>{
 
-tanggalEl.innerHTML = "[ " + tanggal + " ]";
+tanggalEl.innerHTML = "[ " + data.tanggal + " ]";
 
-jadwalEl.innerHTML = "Memuat jadwal...";
+let html = "";
 
+data.jadwal.forEach(item=>{
 
-// proxy stabil
-fetch("https://corsproxy.io/?https://www.kluban.net")
-
-.then(res=>res.text())
-
-.then(html=>{
-
-if(html.toLowerCase().includes("wayang")){
-
-// parsing judul
-let parser = new DOMParser();
-let doc = parser.parseFromString(html,"text/html");
-
-let links = doc.querySelectorAll("h3 a");
-
-let hasil = "";
-
-links.forEach(link=>{
-
-if(link.textContent.toLowerCase().includes("wayang")){
-
-hasil += `
+html += `
 <div class="jadwal-item">
-🎭 ${link.textContent}
+🎭 ${item}
 </div>
 `;
 
-}
-
 });
 
-if(!hasil){
-hasil = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
-}
-
-jadwalEl.innerHTML = hasil;
-
-}else{
-
-jadwalEl.innerHTML =
-"<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
-
-}
+jadwalEl.innerHTML = html;
 
 })
 
 .catch(()=>{
 
 jadwalEl.innerHTML =
-"<div class='jadwal-item'>Gagal memuat jadwal</div>";
+"<div class='jadwal-item'>Belum ada jadwal</div>";
 
 });
 
 }
-
-
 
 // =======================
 // INIT
