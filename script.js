@@ -7,7 +7,7 @@ function shuffle(arr) {
 }
 
 function getRandom(arr, total) {
-  if(!arr) return [];
+  if (!arr) return [];
   return shuffle([...arr]).slice(0, total);
 }
 
@@ -26,7 +26,7 @@ function url(id) {
 
 function setHero(id) {
   const el = document.getElementById("heroFrame");
-  if(el){
+  if (el) {
     el.src = `https://www.youtube.com/embed/${id}`;
   }
 }
@@ -39,7 +39,7 @@ function setHero(id) {
 function renderGrid(list, containerId) {
 
   const el = document.getElementById(containerId);
-  if(!el) return;
+  if (!el) return;
 
   el.innerHTML = list.map(id => `
     <a href="${url(id)}" target="_blank">
@@ -57,7 +57,7 @@ function renderGrid(list, containerId) {
 function renderTrending(list) {
 
   const el = document.getElementById("trending-list");
-  if(!el) return;
+  if (!el) return;
 
   el.innerHTML = list.map(id => `
     <a href="${url(id)}" target="_blank">
@@ -66,6 +66,8 @@ function renderTrending(list) {
   `).join("");
 
 }
+
+
 
 // =======================
 // JADWAL WAYANG
@@ -90,19 +92,43 @@ tanggalEl.innerHTML = "[ " + tanggal + " ]";
 
 jadwalEl.innerHTML = "Memuat jadwal...";
 
-fetch("https://api.allorigins.win/get?url=" + 
-encodeURIComponent("https://www.kluban.net"))
 
-.then(res=>res.json())
+// proxy stabil
+fetch("https://corsproxy.io/?https://www.kluban.net")
 
-.then(data=>{
+.then(res=>res.text())
 
-const html = data.contents;
+.then(html=>{
 
-if(html.includes("Wayang")){
+if(html.toLowerCase().includes("wayang")){
 
-jadwalEl.innerHTML =
-"<div class='jadwal-item'>🎭 Jadwal Wayang ditemukan — sedang diproses...</div>";
+// parsing judul
+let parser = new DOMParser();
+let doc = parser.parseFromString(html,"text/html");
+
+let links = doc.querySelectorAll("h3 a");
+
+let hasil = "";
+
+links.forEach(link=>{
+
+if(link.textContent.toLowerCase().includes("wayang")){
+
+hasil += `
+<div class="jadwal-item">
+🎭 ${link.textContent}
+</div>
+`;
+
+}
+
+});
+
+if(!hasil){
+hasil = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
+}
+
+jadwalEl.innerHTML = hasil;
 
 }else{
 
@@ -121,7 +147,6 @@ jadwalEl.innerHTML =
 });
 
 }
-
 
 
 
@@ -153,19 +178,22 @@ renderTrending(trending);
 console.log("DATA error aman", e);
 }
 
-// jadwal tetap jalan
+
+// jalankan jadwal
 loadJadwalWayang();
 
 });
 
+
+
 // =======================
-// FORCE LOAD JADWAL
+// FORCE LOAD
 // =======================
 
 setTimeout(function(){
-  if(typeof loadJadwalWayang === "function"){
-    loadJadwalWayang();
-  }
-},1000);
 
+if(typeof loadJadwalWayang === "function"){
+loadJadwalWayang();
+}
 
+},1500);
