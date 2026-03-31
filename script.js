@@ -26,7 +26,7 @@ function url(id) {
 
 function setHero(id) {
   const el = document.getElementById("heroFrame");
-  if (el) {
+  if (el && id) {
     el.src = `https://www.youtube.com/embed/${id}`;
   }
 }
@@ -39,7 +39,7 @@ function setHero(id) {
 function renderGrid(list, containerId) {
 
   const el = document.getElementById(containerId);
-  if (!el) return;
+  if (!el || !list) return;
 
   el.innerHTML = list.map(id => `
     <a href="${url(id)}" target="_blank">
@@ -57,7 +57,7 @@ function renderGrid(list, containerId) {
 function renderTrending(list) {
 
   const el = document.getElementById("trending-list");
-  if (!el) return;
+  if (!el || !list) return;
 
   el.innerHTML = list.map(id => `
     <a href="${url(id)}" target="_blank">
@@ -67,8 +67,9 @@ function renderTrending(list) {
 
 }
 
+
 // =======================
-// JADWAL WAYANG AUTO JSON
+// JADWAL WAYANG AUTO
 // =======================
 
 function loadJadwalWayang(){
@@ -78,52 +79,44 @@ const tanggalEl = document.getElementById("tanggalHariIni");
 
 if(!jadwalEl) return;
 
-const today = new Date();
-
-const tanggal = today.toLocaleDateString("id-ID",{
-day:"numeric",
-month:"long",
-year:"numeric"
-});
-
-const tanggalCari = today.toLocaleDateString("id-ID",{
-day:"numeric",
-month:"long"
-});
-
-tanggalEl.innerHTML = "[ " + tanggal + " ]";
-
 jadwalEl.innerHTML = "Memuat jadwal...";
 
-fetch("jadwal.json")
+fetch("jadwal.json?t=" + new Date().getTime())
+
 .then(res=>res.json())
+
 .then(data=>{
 
-let hasil = "";
+// tampilkan tanggal
+if(tanggalEl && data.tanggal){
+tanggalEl.innerHTML = "[ " + data.tanggal + " ]";
+}
 
-data.feed.entry.forEach(item=>{
+let html = "";
 
-const title = item.title.$t;
+// cek jika ada jadwal
+if(data.jadwal && data.jadwal.length > 0){
 
-if(title.includes(tanggalCari)){
+data.jadwal.forEach(item=>{
 
-hasil += `
+html += `
 <div class="jadwal-item">
-🎭 ${title}
+🎭 ${item}
 </div>
 `;
 
-}
-
 });
 
-if(hasil===""){
-hasil = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
+}else{
+
+html = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
+
 }
 
-jadwalEl.innerHTML = hasil;
+jadwalEl.innerHTML = html;
 
 })
+
 .catch(()=>{
 
 jadwalEl.innerHTML =
@@ -132,7 +125,6 @@ jadwalEl.innerHTML =
 });
 
 }
-
 
 
 // =======================
@@ -170,9 +162,8 @@ loadJadwalWayang();
 });
 
 
-
 // =======================
-// FORCE LOAD
+// FORCE LOAD (ANTI CACHE)
 // =======================
 
 setTimeout(function(){
