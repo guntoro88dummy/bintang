@@ -66,6 +66,11 @@ function renderTrending(list) {
 
 function loadJadwalWayang(){
 
+const tanggalEl = document.getElementById("tanggalHariIni");
+const jadwalEl = document.getElementById("jadwalWayang");
+
+if(!jadwalEl) return;
+
 const today = new Date();
 
 const tanggalFull = today.toLocaleDateString('id-ID',{
@@ -74,40 +79,31 @@ month:'long',
 year:'numeric'
 });
 
-const tanggalSimple = today.toLocaleDateString('id-ID',{
+const tanggalCari = today.toLocaleDateString('id-ID',{
 day:'numeric',
 month:'long'
 });
 
-// tampilkan tanggal
-const tanggalEl = document.getElementById("tanggalHariIni");
-if(tanggalEl){
 tanggalEl.innerHTML = "[ " + tanggalFull + " ]";
-}
 
+// RSS BLOGGER JSON
+fetch("https://www.kluban.net/feeds/posts/default?alt=json")
 
-// ambil rss kluban
-fetch("https://api.allorigins.win/raw?url=" + 
-encodeURIComponent("https://www.kluban.net/feeds/posts/default"))
+.then(res=>res.json())
 
-.then(response => response.text())
+.then(data=>{
 
-.then(str => {
-
-const parser = new DOMParser();
-const xml = parser.parseFromString(str, "text/xml");
-
-const items = xml.querySelectorAll("entry");
+const items = data.feed.entry;
 
 let html = "";
 let found = false;
 
-items.forEach(item => {
+items.forEach(item=>{
 
-const title = item.querySelector("title").textContent;
+const title = item.title.$t;
 
 if(
-title.includes(tanggalSimple) &&
+title.includes(tanggalCari) &&
 title.toLowerCase().includes("wayang")
 ){
 
@@ -127,13 +123,15 @@ if(!found){
 html = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
 }
 
-document.getElementById("jadwalWayang").innerHTML = html;
+jadwalEl.innerHTML = html;
 
 })
 
 .catch(()=>{
-document.getElementById("jadwalWayang").innerHTML =
+
+jadwalEl.innerHTML =
 "<div class='jadwal-item'>Gagal memuat jadwal</div>";
+
 });
 
 }
