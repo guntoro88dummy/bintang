@@ -11,19 +11,16 @@ runs-on: ubuntu-latest
 
 ```
 steps:
-  - name: Checkout repo
-    uses: actions/checkout@v3
-    with:
-      token: ${{ secrets.GITHUB_TOKEN }}
+  - uses: actions/checkout@v3
 
-  - name: Fetch RSS
+  - name: Fetch via Proxy
     run: |
-      curl -L https://www.kluban.net/feeds/posts/default?alt=json -o rss.json
+      curl -L "https://api.allorigins.win/raw?url=https://www.kluban.net/feeds/posts/default?alt=json" -o rss.json
 
-  - name: Commit & Push
+  - name: Commit
     run: |
       git config user.name "github-actions"
-      git config user.email "github-actions@github.com"
+      git config user.email "actions@github.com"
       git add rss.json
-      git commit -m "Auto update RSS" || echo "No changes"
+      git commit -m "Update RSS" || echo "No changes"
       git push
