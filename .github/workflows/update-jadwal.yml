@@ -2,7 +2,7 @@ name: Update Jadwal Wayang
 
 on:
 schedule:
-- cron: "0 */6 * * *"
+- cron: "0 * * * *"
 workflow_dispatch:
 
 permissions:
@@ -14,17 +14,50 @@ runs-on: ubuntu-latest
 
 ```
 steps:
-  - name: Checkout
+  - name: Checkout repo
     uses: actions/checkout@v3
 
-  - name: Fetch Jadwal
+  - name: Fetch RSS
     run: |
-      curl -L "https://www.kluban.net/feeds/posts/default?alt=json" -o jadwal.json || echo "{}" > jadwal.json
+      curl -L "https://www.kluban.net/feeds/posts/default?alt=json" -o rss.json
+
+  - name: Convert to Jadwal
+    run: |
+      node <<EOF
+      const fs = require("fs");
+
+      const data = JSON.parse(fs.readFileSync("rss.json"));
+
+      const today = new Date().toLocaleDateString("id-ID", {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      });
+
+      const entries = data.feed.entry || [];
+
+      let jadwal = [];
+
+      entries.forEach(item => {
+        const title = item.title.$t;
+
+        if(title.toLowerCase().includes("wayang")){
+          jadwal.push(title);
+        }
+      });
+
+      const output = {
+        tanggal: today,
+        jadwal: jadwal.slice(0,5)
+      };
+
+      fs.writeFileSync("jadwal.json", JSON.stringify(output,null,2));
+      EOF
 
   - name: Commit
     run: |
       git config --global user.name "github-actions"
       git config --global user.email "actions@github.com"
       git add jadwal.json
-      git diff --quiet && git diff --staged --quiet || git commit -m "Auto update jadwal"
+      git commit -m "Auto update jadwal" || echo "No changes"
       git push
