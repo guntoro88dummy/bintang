@@ -203,9 +203,19 @@ if(item.tanggal === today){
 
 html += `
 <div class="jadwal-item">
-🎭 ${item.dalang}<br>
-⭐ ${item.bintang || "-"}<br>
+
+<div class="jadwal-dalang">
+🎭 ${item.dalang}
+</div>
+
+<div class="jadwal-bintang">
+⭐ ${item.bintang || "-"}
+</div>
+
+<div class="jadwal-lokasi">
 📍 ${item.lokasi}
+</div>
+
 </div>
 `;
 
