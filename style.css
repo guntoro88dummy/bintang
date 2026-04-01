@@ -107,3 +107,16 @@ padding:10px;
 margin-top:10px;
 border-radius:10px;
 }
+
+.jadwal-section{
+padding:20px;
+background:#fff;
+border-radius:12px;
+margin-top:20px;
+}
+
+.jadwal-item{
+padding:12px;
+border-bottom:1px solid #eee;
+line-height:1.6;
+}
