@@ -1,58 +1,24 @@
 name: Update Jadwal Wayang
 
 on:
-schedule:
-- cron: "0 * * * *"
 workflow_dispatch:
-
-permissions:
-contents: write
+schedule:
+- cron: '0 * * * *'
 
 jobs:
 update:
 runs-on: ubuntu-latest
 
 ```
+permissions:
+  contents: write
+
 steps:
-  - name: Checkout repo
+  - name: Checkout
     uses: actions/checkout@v3
 
-  - name: Fetch RSS
-    run: |
-      curl -L "https://www.kluban.net/feeds/posts/default?alt=json" -o rss.json
-
-  - name: Convert to Jadwal
-    run: |
-      node <<EOF
-      const fs = require("fs");
-
-      const data = JSON.parse(fs.readFileSync("rss.json"));
-
-      const today = new Date().toLocaleDateString("id-ID", {
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-      });
-
-      const entries = data.feed.entry || [];
-
-      let jadwal = [];
-
-      entries.forEach(item => {
-        const title = item.title.$t;
-
-        if(title.toLowerCase().includes("wayang")){
-          jadwal.push(title);
-        }
-      });
-
-      const output = {
-        tanggal: today,
-        jadwal: jadwal.slice(0,5)
-      };
-
-      fs.writeFileSync("jadwal.json", JSON.stringify(output,null,2));
-      EOF
+  - name: Fetch Jadwal
+    run: curl -L https://www.kluban.net/feeds/posts/default?alt=json -o jadwal.json
 
   - name: Commit
     run: |
