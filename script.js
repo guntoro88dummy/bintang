@@ -173,3 +173,64 @@ loadJadwalWayang();
 }
 
 },1500);
+
+// =======================
+// JADWAL WAYANG HARI INI
+// =======================
+
+function loadJadwalWayang(){
+
+const jadwalEl = document.getElementById("jadwalWayang");
+const tanggalEl = document.getElementById("tanggalHariIni");
+
+if(!jadwalEl) return;
+
+const today = new Date().toLocaleDateString("id-ID",{
+day:"numeric",
+month:"long",
+year:"numeric"
+});
+
+tanggalEl.innerHTML = "[ " + today + " ]";
+
+let html = "";
+
+if(typeof JADWAL_WAYANG !== "undefined"){
+
+JADWAL_WAYANG.forEach(item=>{
+
+if(item.tanggal === today){
+
+html += `
+<div class="jadwal-item">
+🎭 ${item.dalang}<br>
+⭐ ${item.bintang || "-"}<br>
+📍 ${item.lokasi}
+</div>
+`;
+
+}
+
+});
+
+}
+
+if(html === ""){
+html = "<div class='jadwal-item'>Belum ada jadwal hari ini</div>";
+}
+
+jadwalEl.innerHTML = html;
+
+}
+
+
+
+// =======================
+// INIT
+// =======================
+
+document.addEventListener("DOMContentLoaded",function(){
+
+loadJadwalWayang();
+
+});
